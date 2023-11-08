@@ -26,8 +26,7 @@ export const handler: Handlers = {
         
         try {
             const imageUrl = `data:image/${imageType};base64,${base64Image}`;
-            console.log(imageUrl); // Log the image URL
-            
+
             openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
@@ -59,7 +58,7 @@ export const handler: Handlers = {
             if (!openaiResponse.ok) {
                 const errorBody = await openaiResponse.text();
                 console.error(`OpenAI API request failed with status ${openaiResponse.status} and body ${errorBody}`);
-                return new Response(`OpenAI API request failed with status ${openaiResponse.status} and body ${errorBody} with imageType:${imageType}`, { status: 500 });
+                return new Response(`OpenAI API request failed with status ${openaiResponse.status} and body ${errorBody} with imageType:${imageType} and imageUrl: ${imageUrl}`, { status: 500 });
             }
             console.log(openaiResponse)
         } catch (error) {
