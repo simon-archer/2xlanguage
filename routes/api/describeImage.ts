@@ -11,6 +11,7 @@ export const handler: Handlers = {
         try {
             const formData = await req.formData();
             const file = formData.get('image') as File; // Cast formData.get('image') to File
+            console.log(file);
             const imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
             const base64Image = new Buffer(file.value).toString('base64'); // Use file.value to get the file data
             const imageUrl = `data:${imageType};base64,${base64Image}`;
