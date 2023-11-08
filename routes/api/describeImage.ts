@@ -1,5 +1,4 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
-import { fetch } from "fetch";
 
 export const handler: Handlers = {
   async GET(req: Request, _ctx: HandlerContext) {
