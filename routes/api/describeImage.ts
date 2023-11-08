@@ -25,6 +25,9 @@ export const handler: Handlers = {
         }
         
         try {
+            const imageUrl = `data:image/${imageType};base64,${base64Image}`;
+            console.log(imageUrl); // Log the image URL
+            
             openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
