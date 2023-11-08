@@ -40,7 +40,7 @@ export const handler: Handlers = {
                             content: [
                                 {
                                     type: "text",
-                                    text: "What’s in this image?"
+                                    text: "Write the shortest description of what is in this image"
                                 },
                                 {
                                     type: "image_url",

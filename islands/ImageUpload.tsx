@@ -1,6 +1,7 @@
-import { useEffect } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 export default function ImageUpload() {
+  const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
   const handleImageUpload = async (event) => {
         event.preventDefault();
         const file = event.target.elements.file.files[0];
@@ -17,9 +18,7 @@ export default function ImageUpload() {
           body: formData,
         });
         const data = await response.json();
-        console.log(imageType)
-      
-        // TODO: Display the image description in the two languages
+        setImageDescription(data);
       };
 
   useEffect(() => {
@@ -34,9 +33,18 @@ export default function ImageUpload() {
   }, []);
 
   return (
-    <form id="imageUploadForm">
-      <input type="file" name="file" accept="image/*" />
-      <button type="submit">Upload Image</button>
-    </form>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <form id="imageUploadForm" style={{ marginBottom: '20px' }}>
+        <input type="file" name="file" accept="image/*" />
+        <button type="submit" style={{ marginLeft: '10px' }}>Upload Image</button>
+      </form>
+      {imageDescription.imageUrl && (
+        <div style={{ textAlign: 'center' }}>
+          <img src={imageDescription.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', height: 'auto' }} />
+          <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{imageDescription.lang1}</p>
+          <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{imageDescription.lang2}</p>
+        </div>
+      )}
+    </div>
   );
 }
