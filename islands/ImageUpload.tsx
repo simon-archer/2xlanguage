@@ -6,14 +6,13 @@ export default function ImageUpload() {
         const file = event.target.elements.file.files[0];
         const lang1 = "en";
         const lang2 = "es";
-        const imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
       
         const formData = new FormData();
         formData.append("image", file);
         formData.append("lang1", lang1);
         formData.append("lang2", lang2);
       
-        const response = await fetch(`/api/describeImage?imageType=${imageType}`, {
+        const response = await fetch(`/api/describeImage`, {
           method: "POST",
           body: formData,
         });

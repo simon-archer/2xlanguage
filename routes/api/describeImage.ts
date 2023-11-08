@@ -1,4 +1,5 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
+import { Buffer } from "https://deno.land/std@0.107.0/io/buffer.ts";
 
 export const handler: Handlers = {
     async POST(req: Request, _ctx: HandlerContext) {
@@ -8,17 +9,13 @@ export const handler: Handlers = {
         let description;
 
         try {
-            const url = new URL(req.url);
-            imageType = url.searchParams.get("imageType");
-        
-            const body = new Uint8Array(await req.arrayBuffer());
-            let binary = '';
-            const bytes = new Uint8Array(body);
-            const len = bytes.byteLength;
-            for (let i = 0; i < len; i++) {
-                binary += String.fromCharCode(bytes[i]);
-            }
-            base64Image = btoa(binary);
+            const formData = await req.formData();
+            const file = formData.get('image') as File; // Cast formData.get('image') to File
+            const imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
+            const base64Image = new Buffer(file.value).toString('base64'); // Use file.value to get the file data
+            const imageUrl = `data:${imageType};base64,${base64Image}`;
+
+            console.log(imageUrl);
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
