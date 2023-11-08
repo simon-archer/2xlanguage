@@ -42,7 +42,7 @@ export const handler: Handlers = {
                                     text: "What’s in this image?"
                                 },
                                 {
-                                    type: "image",
+                                    type: "image_url",
                                     image: {
                                         url: `data:image/${imageType};base64,${base64Image}`
                                     }
