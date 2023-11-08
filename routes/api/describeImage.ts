@@ -47,6 +47,7 @@ export const handler: Handlers = {
             console.error("Error during OpenAI API request:", error);
             return new Response("Error during OpenAI API request", { status: 500 });
         }
+        console.log(openaiResponse)
     
         try {
             if (!openaiResponse.ok) {
