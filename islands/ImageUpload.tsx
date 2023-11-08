@@ -1,43 +1,39 @@
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useState, useRef } from "preact/hooks";
 
 export default function ImageUpload() {
+  const videoRef = useRef(null);
   const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
-  const handleImageUpload = async (event) => {
-        event.preventDefault();
-        const file = event.target.elements.file.files[0];
-        const lang1 = "en";
-        const lang2 = "es";
-      
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("lang1", lang1);
-        formData.append("lang2", lang2);
-      
-        const response = await fetch(`/api/describeImage`, {
-          method: "POST",
-          body: formData,
-        });
-        const data = await response.json();
-        setImageDescription(data);
-      };
 
   useEffect(() => {
-    // Add event listener when component mounts
-    const form = document.getElementById('imageUploadForm');
-    form.addEventListener('submit', handleImageUpload);
-
-    // Cleanup when component unmounts
-    return () => {
-      form.removeEventListener('submit', handleImageUpload);
-    };
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        videoRef.current.srcObject = stream;
+      });
   }, []);
+
+  const captureImage = async () => {
+    const canvas = document.createElement('canvas');
+    const scale = 0.4; // scale down by 80%
+    canvas.width = videoRef.current.videoWidth * scale;
+    canvas.height = videoRef.current.videoHeight * scale;
+    canvas.getContext('2d').drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const imageUrl = canvas.toDataURL();
+    const lang1 = "en";
+    const lang2 = "es";
+
+    const response = await fetch(`/api/describeImage`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrl, lang1, lang2 }),
+    });
+    const data = await response.json();
+    setImageDescription(data);
+  };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <form id="imageUploadForm" style={{ marginBottom: '20px' }}>
-        <input type="file" name="file" accept="image/*" />
-        <button type="submit" style={{ marginLeft: '10px' }}>Upload Image</button>
-      </form>
+      <video ref={videoRef} autoPlay style={{ marginBottom: '20px' }}></video>
+      <button onClick={captureImage} style={{ marginLeft: '10px' }}>Capture Image</button>
       {imageDescription.imageUrl && (
         <div style={{ textAlign: 'center' }}>
           <img src={imageDescription.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', height: 'auto' }} />

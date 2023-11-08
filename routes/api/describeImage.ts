@@ -8,16 +8,12 @@ export const handler: Handlers = {
         let imageUrl;
         let base64Image;
         let description;
-
+      
         try {
-            const formData = await req.formData();
-            const file = formData.get('image') as File; // Cast formData.get('image') to File
-            console.log(file);
-            imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
-            const fileData = await new Response(file.stream()).arrayBuffer(); // Read the file data
-            base64Image = encode(new Uint8Array(fileData)); // Convert the file data to base64
-            imageUrl = `data:image/${imageType};base64,${base64Image}`;
-            console.log("Image URL:", imageUrl);
+          const { imageUrl: imageData, lang1, lang2 } = await req.json();
+          base64Image = imageData.split(',')[1];
+          imageType = imageData.split(';')[0].split('/')[1];
+          imageUrl = imageData;
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
@@ -45,7 +41,7 @@ export const handler: Handlers = {
                                 {
                                     type: "image_url",
                                     image_url: {
-                                        url: `data:image/${imageType};base64,${base64Image}`
+                                        url: `${imageUrl}`
                                     }
                                 }
                             ]
