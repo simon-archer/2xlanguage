@@ -56,7 +56,7 @@ export const handler: Handlers = {
             if (!openaiResponse.ok) {
                 const errorBody = await openaiResponse.text();
                 console.error(`OpenAI API request failed with status ${openaiResponse.status} and body ${errorBody}`);
-                return new Response("OpenAI API request failed", { status: 500 });
+                return new Response(`OpenAI API request failed with status ${openaiResponse.status} and body ${errorBody}`, { status: 500 });
             }
             console.log(openaiResponse)
         } catch (error) {
