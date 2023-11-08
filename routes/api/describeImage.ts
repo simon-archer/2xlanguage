@@ -16,7 +16,7 @@ export const handler: Handlers = {
             imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
             const fileData = await new Response(file.stream()).arrayBuffer(); // Read the file data
             base64Image = encode(new TextDecoder().decode(new Uint8Array(fileData))); // Convert the file data to base64
-            const imageUrl = `data:${imageType};base64,${base64Image}`;
+            imageUrl = `data:image/${imageType};base64,${base64Image}`;
             console.log("Image URL:", imageUrl);
         } catch (error) {
             console.error("Error during request handling:", error);
