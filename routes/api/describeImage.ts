@@ -12,7 +12,13 @@ export const handler: Handlers = {
             imageType = url.searchParams.get("imageType");
         
             const body = new Uint8Array(await req.arrayBuffer());
-            base64Image = btoa(String.fromCharCode(...Array.from(body)));
+            let binary = '';
+            const bytes = new Uint8Array(body);
+            const len = bytes.byteLength;
+            for (let i = 0; i < len; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            base64Image = btoa(binary);
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
