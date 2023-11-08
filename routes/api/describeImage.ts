@@ -13,7 +13,7 @@ export const handler: Handlers = {
             const file = formData.get('image') as File; // Cast formData.get('image') to File
             console.log(file);
             imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
-            const fileData = await new Response(file.stream).arrayBuffer(); // Read the file data
+            const fileData = await new Response(file.stream()).arrayBuffer(); // Read the file data
             base64Image = encode(new TextDecoder().decode(new Uint8Array(fileData))); // Convert the file data to base64
             const imageUrl = `data:${imageType};base64,${base64Image}`;
 
