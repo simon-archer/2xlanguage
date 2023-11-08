@@ -2,6 +2,10 @@ import { HandlerContext, Handlers } from "$fresh/server.ts";
 
 export const handler: Handlers = {
     async POST(req: Request, _ctx: HandlerContext) {
+        let openaiResponse;
+        let base64Image;
+        let description;
+
         try {
             const url = new URL(req.url);
             const imageType = url.searchParams.get("imageType");
@@ -13,9 +17,8 @@ export const handler: Handlers = {
             return new Response("Error during request handling", { status: 500 });
         }
         
-        let openaiResponse;
         try {
-            const openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+            openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -43,10 +46,12 @@ export const handler: Handlers = {
                     max_tokens: 300
                 }),
             });
+            console.log(openaiResponse)
         } catch (error) {
             console.error("Error during OpenAI API request:", error);
             return new Response("Error during OpenAI API request", { status: 500 });
         }
+
         console.log(openaiResponse)
     
         try {
@@ -55,7 +60,7 @@ export const handler: Handlers = {
             }
             const data = await openaiResponse.json();
             console.log(data)
-            const description = data.choices[0].message.content;
+            description = data.choices[0].message.content;
         } catch (error) {
             console.error("Error during OpenAI API response handling:", error);
             return new Response("Error during OpenAI API response handling", { status: 500 });

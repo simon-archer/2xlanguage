@@ -21,7 +21,6 @@ export default function ImageUpload() {
       
         // TODO: Display the image description in the two languages
       };
-    
 
   useEffect(() => {
     // Add event listener when component mounts
