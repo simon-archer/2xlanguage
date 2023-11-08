@@ -1,5 +1,4 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
-import { readAll } from "https://deno.land/std/streams/conversion.ts";
 import { encode } from "https://deno.land/std@0.107.0/encoding/base64.ts";
 
 export const handler: Handlers = {
@@ -14,8 +13,8 @@ export const handler: Handlers = {
             const file = formData.get('image') as File; // Cast formData.get('image') to File
             console.log(file);
             imageType = file.type.split("/")[1]; // Get the image type (jpeg or png)
-            const fileData = await readAll(file.stream); // Read the file data
-            base64Image = encode(new TextDecoder().decode(fileData)); // Convert the file data to base64
+            const fileData = await new Response(file.stream).arrayBuffer(); // Read the file data
+            base64Image = encode(new TextDecoder().decode(new Uint8Array(fileData))); // Convert the file data to base64
             const imageUrl = `data:${imageType};base64,${base64Image}`;
 
             console.log(imageUrl);
