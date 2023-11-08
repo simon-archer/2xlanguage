@@ -5,6 +5,7 @@ export const handler: Handlers = {
     async POST(req: Request, _ctx: HandlerContext) {
         let openaiResponse;
         let imageType;
+        let imageUrl;
         let base64Image;
         let description;
 
@@ -16,15 +17,14 @@ export const handler: Handlers = {
             const fileData = await new Response(file.stream()).arrayBuffer(); // Read the file data
             base64Image = encode(new TextDecoder().decode(new Uint8Array(fileData))); // Convert the file data to base64
             const imageUrl = `data:${imageType};base64,${base64Image}`;
-
-            console.log(imageUrl);
+            console.log("Image URL:", imageUrl);
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
         }
         
         try {
-            const imageUrl = `data:image/${imageType};base64,${base64Image}`;
+            imageUrl = `data:image/${imageType};base64,${base64Image}`;
 
             openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
                 method: "POST",
@@ -83,7 +83,7 @@ export const handler: Handlers = {
 
         // TODO: Translate the description into the two languages using a translation API
 
-        return new Response(JSON.stringify({ lang1: description, lang2: description }), {
+        return new Response(JSON.stringify({ lang1: description, lang2: description, imageUrl }), {
             headers: { "Content-Type": "application/json" },
         });
     },
