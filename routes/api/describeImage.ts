@@ -40,8 +40,9 @@ export const handler: Handlers = {
     if (!openaiResponse.ok) {
       return new Response("OpenAI API request failed", { status: 500 });
     }
-
-    const data = await openaiResponse.json();
+    try {
+    const data = await openaiResponse.json();¨
+    console.log(data)
     const description = data.choices[0].message.content;
 
     // TODO: Translate the description into the two languages using a translation API
@@ -49,5 +50,9 @@ export const handler: Handlers = {
     return new Response(JSON.stringify({ lang1: description, lang2: description }), {
       headers: { "Content-Type": "application/json" },
     });
+    } catch (error) {
+        console.error(error);
+        return new Response("An error occurred", { status: 500 });
+      }
   },
 };
