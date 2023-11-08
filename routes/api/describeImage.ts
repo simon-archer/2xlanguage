@@ -13,7 +13,7 @@ export const handler: Handlers = {
             const body = new Uint8Array(await req.arrayBuffer());
             const base64Image = btoa(String.fromCharCode(...body));
         } catch (error) {
-            console.error("Error during request handling:", error);
+            console.error("Error during request handling:", error.message);
             return new Response("Error during request handling", { status: 500 });
         }
         
