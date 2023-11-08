@@ -18,6 +18,7 @@ export default function ImageUpload() {
           body: formData,
         });
         const data = await response.json();
+        console.log(imageType)
       
         // TODO: Display the image description in the two languages
       };
