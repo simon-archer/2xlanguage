@@ -43,7 +43,7 @@ export const handler: Handlers = {
                             ]
                         }
                     ],
-                    max_tokens: 300
+                    max_tokens: 1000
                 }),
             });
             console.log(openaiResponse)
