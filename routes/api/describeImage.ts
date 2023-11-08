@@ -3,15 +3,16 @@ import { HandlerContext, Handlers } from "$fresh/server.ts";
 export const handler: Handlers = {
     async POST(req: Request, _ctx: HandlerContext) {
         let openaiResponse;
+        let imageType;
         let base64Image;
         let description;
 
         try {
             const url = new URL(req.url);
-            const imageType = url.searchParams.get("imageType");
+            imageType = url.searchParams.get("imageType");
         
             const body = new Uint8Array(await req.arrayBuffer());
-            const base64Image = btoa(String.fromCharCode(...Array.from(body)));
+            base64Image = btoa(String.fromCharCode(...Array.from(body)));
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
