@@ -43,7 +43,7 @@ export const handler: Handlers = {
                                 },
                                 {
                                     type: "image_url",
-                                    image: {
+                                    image_url: {
                                         url: `data:image/${imageType};base64,${base64Image}`
                                     }
                                 }
