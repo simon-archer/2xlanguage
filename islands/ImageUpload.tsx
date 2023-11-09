@@ -18,21 +18,29 @@ export default function ImageUpload() {
 
   const captureImage = async () => {
     const canvas = document.createElement('canvas');
-    const scale = 0.4; // scale down by 80%
-    canvas.width = videoRef.current.videoWidth * scale;
-    canvas.height = videoRef.current.videoHeight * scale;
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
     canvas.getContext('2d').drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    const imageUrl = canvas.toDataURL();
+    const displayImageUrl = canvas.toDataURL();
+    setImageDescription(prevState => ({ ...prevState, imageUrl: displayImageUrl }));
+
+    const apiCanvas = document.createElement('canvas');
+    const scale = 0.4;
+    apiCanvas.width = videoRef.current.videoWidth * scale;
+    apiCanvas.height = videoRef.current.videoHeight * scale;
+    apiCanvas.getContext('2d').drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    const apiImageUrl = apiCanvas.toDataURL();
+
     const lang1 = "en";
     const lang2 = "es";
 
     const response = await fetch(`/api/describeImage`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ imageUrl, lang1, lang2 }),
+      body: JSON.stringify({ imageUrl: apiImageUrl, lang1, lang2 }),
     });
     const data = await response.json();
-    setImageDescription(data);
+    setImageDescription({...data, imageUrl: displayImageUrl});
   };
 
   return (
