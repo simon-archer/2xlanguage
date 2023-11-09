@@ -43,11 +43,19 @@ export default function ImageUpload() {
     setImageDescription({...data, imageUrl: displayImageUrl});
   };
 
+  const resetImage = () => {
+    setImageDescription({ lang1: '', lang2: '', imageUrl: '' });
+  };
+
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
       <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1 }}>
         <button onClick={switchCamera}>Switch Camera</button>
+        {!imageDescription.imageUrl ? (
         <button onClick={captureImage} style={{ marginLeft: '10px' }}>Capture Image</button>
+      ) : (
+        <button onClick={resetImage} style={{ marginLeft: '10px' }}>Take New</button>
+      )}
       </div>
       {!imageDescription.imageUrl ? (
         <video 
@@ -69,7 +77,16 @@ export default function ImageUpload() {
         <img src={imageDescription.imageUrl} alt="Captured" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', objectFit: 'cover' }} />
       )}
       {imageDescription.imageUrl && (
-        <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1, backgroundColor: 'white', padding: '10px' }}>
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '10px', 
+          left: '50%', 
+          transform: 'translateX(-50%)', 
+          zIndex: 1, 
+          backgroundColor: 'white', 
+          padding: '10px', 
+          textAlign: 'center' 
+        }}>
           <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
           <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p>
         </div>
