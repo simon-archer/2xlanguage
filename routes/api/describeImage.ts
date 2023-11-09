@@ -1,5 +1,4 @@
 import { HandlerContext, Handlers } from "$fresh/server.ts";
-import { encode } from "https://deno.land/std@0.107.0/encoding/base64.ts";
 
 export const handler: Handlers = {
     async POST(req: Request, _ctx: HandlerContext) {

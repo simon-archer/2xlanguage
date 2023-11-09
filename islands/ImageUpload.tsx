@@ -16,12 +16,15 @@ export default function ImageUpload() {
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ 
       video: { 
-        facingMode: 'user',
+        facingMode,
         width: { ideal: 1280 },
         height: { ideal: 720 }
       } 
     })
     .then(stream => {
+      if (videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+      }
       videoRef.current.srcObject = stream;
     });
   }, [facingMode]);
