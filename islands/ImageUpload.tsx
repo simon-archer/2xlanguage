@@ -99,15 +99,18 @@ export default function ImageUpload() {
         boxSizing: 'border-box'
       }}>
         <div style={{ backgroundColor: 'white', padding: '10px' }}>
+          <button onClick={switchCamera}>Switch Camera</button>
+        </div>
+        { (imageDescription.lang1 || imageDescription.lang2) && (
+          <div style={{ backgroundColor: 'white', padding: '10px' }}>
+            <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
+            {/* <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p> */}
+          </div>
+        )}
+        <div style={{ backgroundColor: 'white', padding: '10px' }}>
           <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
             {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
           </button>
-        </div>
-        <div style={{ backgroundColor: 'white', padding: '10px' }}>
-          <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p>
-        </div>
-        <div style={{ backgroundColor: 'white', padding: '10px' }}>
-          <button onClick={switchCamera}>Switch Camera</button>
         </div>
       </div>
     </div>
