@@ -91,7 +91,6 @@ export default function ImageUpload() {
         left: '50%', 
         transform: 'translateX(-50%)', 
         zIndex: 1, 
-        backgroundColor: 'white', 
         padding: '10px', 
         textAlign: 'center',
         display: 'flex',
@@ -99,14 +98,17 @@ export default function ImageUpload() {
         width: '100%',
         boxSizing: 'border-box'
       }}>
-        <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
-          {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
-        </button>
-        <div>
-          <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
+        <div style={{ backgroundColor: 'white', padding: '10px' }}>
+          <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
+            {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
+          </button>
+        </div>
+        <div style={{ backgroundColor: 'white', padding: '10px' }}>
           <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p>
         </div>
-        <button onClick={switchCamera}>Switch Camera</button>
+        <div style={{ backgroundColor: 'white', padding: '10px' }}>
+          <button onClick={switchCamera}>Switch Camera</button>
+        </div>
       </div>
     </div>
   );
