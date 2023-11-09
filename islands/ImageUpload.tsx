@@ -5,7 +5,7 @@ export default function ImageUpload() {
   const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
       .then(stream => {
         videoRef.current.srcObject = stream;
       });
@@ -32,7 +32,7 @@ export default function ImageUpload() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <video ref={videoRef} autoPlay style={{ marginBottom: '20px' }}></video>
+      <video ref={videoRef} autoPlay playsInline style={{ marginBottom: '20px' }}></video>
       <button onClick={captureImage} style={{ marginLeft: '10px' }}>Capture Image</button>
       {imageDescription.imageUrl && (
         <div style={{ textAlign: 'center' }}>
