@@ -28,7 +28,7 @@ export default function ImageUpload() {
     const scale = 0.4;
     apiCanvas.width = videoRef.current.videoWidth * scale;
     apiCanvas.height = videoRef.current.videoHeight * scale;
-    apiCanvas.getContext('2d').drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    apiCanvas.getContext('2d').drawImage(videoRef.current, 0, 0, apiCanvas.width, apiCanvas.height);
     const apiImageUrl = apiCanvas.toDataURL();
 
     const lang1 = "en";
@@ -45,6 +45,10 @@ export default function ImageUpload() {
 
   const resetImage = () => {
     setImageDescription({ lang1: '', lang2: '', imageUrl: '' });
+    navigator.mediaDevices.getUserMedia({ video: { facingMode } })
+      .then(stream => {
+        videoRef.current.srcObject = stream;
+      });
   };
 
   return (
