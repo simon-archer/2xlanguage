@@ -67,51 +67,59 @@ export default function ImageUpload() {
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
       {!imageDescription.imageUrl ? (
-        <video 
-          ref={videoRef} 
-          autoPlay 
-          playsInline 
-          muted 
-          style={{ 
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          style={{
             position: 'absolute',
             top: '0',
             left: '0',
-            width: '100%', 
-            height: '100%', 
+            width: '100%',
+            height: '100%',
             objectFit: 'cover',
-            transform: facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)' 
+            transform: facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)'
           }}
         ></video>
       ) : (
         <img src={imageDescription.imageUrl} alt="Captured" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', objectFit: 'cover' }} />
       )}
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '10px', 
-        left: '50%', 
-        transform: 'translateX(-50%)', 
-        zIndex: 1, 
-        padding: '10px', 
-        textAlign: 'center',
-        display: 'flex',
-        justifyContent: 'space-between',
+      <div style={{
+        position: 'absolute',
+        bottom: '0',
         width: '100%',
-        boxSizing: 'border-box'
+        textAlign: 'center',
+        zIndex: 1
       }}>
-        <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
-          <button onClick={switchCamera}>Switch Camera</button>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '10px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
+            <button onClick={switchCamera}>Switch Camera</button>
+          </div>
+          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
+            <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
+              {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
+            </button>
+          </div>
         </div>
         { (imageDescription.lang1 || imageDescription.lang2) && (
-          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '10px',
+            borderRadius: '32px',
+            margin: '0px 0px 10px 10px',
+            maxWidth: 'calc(100% - 20px)',
+            boxSizing: 'border-box'
+          }}>
             <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
             {/* <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p> */}
           </div>
         )}
-        <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px'}}>
-          <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
-            {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
-          </button>
-        </div>
       </div>
     </div>
   );
