@@ -41,26 +41,29 @@ export default function ImageUpload() {
         <button onClick={switchCamera}>Switch Camera</button>
         <button onClick={captureImage} style={{ marginLeft: '10px' }}>Capture Image</button>
       </div>
-      <video 
-        ref={videoRef} 
-        autoPlay 
-        playsInline 
-        muted 
-        style={{ 
-          position: 'absolute',
-          top: '0',
-          left: '0',
-          width: '100%', 
-          height: '100%', 
-          objectFit: 'cover',
-          transform: facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)' 
-        }}
-      ></video>
+      {!imageDescription.imageUrl ? (
+        <video 
+          ref={videoRef} 
+          autoPlay 
+          playsInline 
+          muted 
+          style={{ 
+            position: 'absolute',
+            top: '0',
+            left: '0',
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'cover',
+            transform: facingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)' 
+          }}
+        ></video>
+      ) : (
+        <img src={imageDescription.imageUrl} alt="Captured" style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', objectFit: 'cover' }} />
+      )}
       {imageDescription.imageUrl && (
-        <div style={{ textAlign: 'center' }}>
-          <img src={imageDescription.imageUrl} alt="Uploaded" style={{ maxWidth: '100%', height: 'auto' }} />
-          <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{imageDescription.lang1}</p>
-          <p style={{ marginTop: '10px', fontWeight: 'bold' }}>{imageDescription.lang2}</p>
+        <div style={{ position: 'absolute', top: '10px', left: '10px', zIndex: 1, backgroundColor: 'white', padding: '10px' }}>
+          <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
+          <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p>
         </div>
       )}
     </div>
