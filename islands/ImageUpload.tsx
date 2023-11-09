@@ -5,16 +5,26 @@ export default function ImageUpload() {
   const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
   const [facingMode, setFacingMode] = useState('user');
 
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } })
-      .then(stream => {
-        videoRef.current.srcObject = stream;
-      });
-  }, [facingMode]);
-
   const switchCamera = () => {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => track.stop());
+    }
     setFacingMode(prevState => prevState === 'environment' ? 'user' : 'environment');
   };
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ 
+      video: { 
+        facingMode: 'user',
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      } 
+    })
+    .then(stream => {
+      videoRef.current.srcObject = stream;
+    });
+  }, [facingMode]);
 
   const captureImage = async () => {
     const canvas = document.createElement('canvas');
