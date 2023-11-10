@@ -1,4 +1,6 @@
-import { useEffect, useState, useRef } from "preact/hooks";
+import { useEffect, useState, useRef, useContext } from "preact/hooks";
+import { LanguageContext } from './LanguageContext.tsx';
+
 
 export default function ImageUpload() {
   const videoRef = useRef(null);
@@ -6,8 +8,7 @@ export default function ImageUpload() {
   const [facingMode, setFacingMode] = useState('environment');
   const [isLoading, setIsLoading] = useState(false);
 
-  const [lang1, setLang1] = useState('en');
-  const [lang2, setLang2] = useState('no');
+  const { lang1, lang2 } = useContext(LanguageContext);
 
   const switchCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
@@ -48,22 +49,22 @@ export default function ImageUpload() {
     apiCanvas.getContext('2d').drawImage(videoRef.current, 0, 0, apiCanvas.width, apiCanvas.height);
     const apiImageUrl = apiCanvas.toDataURL();
 
-    setLang1("English");
-    setLang2("Norwegian");
+    // setLang1("English");
+    // setLang2("Norwegian");
     setIsLoading(true);
-
     const response = await fetch(`/api/describeImage`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageUrl: apiImageUrl, lang1, lang2 }),
     });
-    setIsLoading(false);
+    console.log(isLoading)
     const data = await response.json();
     const descriptions = data.lang1.split("\n");
     const lang1Description = descriptions[0].replace("lang1: ", "");
     const lang2Description = descriptions[1].replace("lang2: ", "");
 
     setImageDescription(prevState => ({ ...prevState, imageUrl: displayImageUrl, lang1: lang1Description, lang2: lang2Description }));
+    setIsLoading(false);
   };
 
   const resetImage = () => {
@@ -77,9 +78,21 @@ export default function ImageUpload() {
   return (
     
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
-      {/* {!isLoading && (
-          <div className="spinner" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>Loading</div>
-        )} */}
+      {isLoading && (
+    <div style={{ 
+      position: 'absolute', 
+      top: '50%', 
+      left: '50%', 
+      transform: 'translate(-50%, -50%)', 
+      backgroundColor: 'white', 
+      borderRadius: '92px', 
+      padding: '32px',
+      zIndex: '999',
+      alignItems: 'center'
+    }}>
+    <div className="spinner"></div>
+    </div>
+    )}
       {!imageDescription.imageUrl ? (
         <video
           ref={videoRef}

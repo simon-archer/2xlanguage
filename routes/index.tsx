@@ -1,15 +1,14 @@
-import { useSignal } from "@preact/signals";
 import ImageUpload from "../islands/ImageUpload.tsx";
-
+import LanguageSelector from "../islands/LanguageSelector.tsx";
+import { LanguageProvider } from '../islands/LanguageContext.tsx';
 
 export default function Home() {
-  const count = useSignal(3);
-
   return (
-    <div>
+    <LanguageProvider>
+      <LanguageSelector />
       <div class="max-w-screen-md mx-auto flex flex-col items-center justify-center">
         <ImageUpload />
       </div>
-    </div>
+    </LanguageProvider>
   );
 }
