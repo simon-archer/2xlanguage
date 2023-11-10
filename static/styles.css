@@ -140,15 +140,16 @@ html {
   z-index: 9999;
 }
 
-.language-selector {
-  background-color: white;
-  border-radius: 10px;
-  padding: 10px;
+.selector-container {
+  margin: 5px; /* Adjust as needed */
 }
 
-.language-option {
-  background-color: grey;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 10px;
+.language-select {
+  background-color: #E4E4E4;
+  border-radius: 32px;
+  padding: 10px; /* Adjust as needed */
+  border: none; /* Optional: removes the default select styling */
+  -webkit-appearance: none; /* Removes default styling for Safari */
+  -moz-appearance: none; /* Removes default styling for Firefox */
+  appearance: none; /* Removes default styling */
 }

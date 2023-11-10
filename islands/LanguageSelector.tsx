@@ -17,18 +17,18 @@ export default function LanguageSelector() {
       justifyContent: 'space-between', 
       backgroundColor: '#fff', 
       borderRadius: '48px', 
-      padding: '10px', 
+      padding: '5px', 
       zIndex: 9999
     }}>
-      <div style={{borderWidth: '3px', borderColor: 'black', backgroundColor: 'white', borderRadius: '32px', margin: '5px', padding: '10px'}}>
-        <select value={lang1} onChange={(e) => setLang1(e.target.value)}>
+      <div>
+        <select style={{ backgroundColor: '#E4E4E4', borderRadius: '32px', margin: '5px', padding: '10px'}} value={lang1} onChange={(e) => setLang1(e.target.value)}>
           {languages.map((lang) => (
             <option key={lang} value={lang}>{lang}</option>
           ))}
         </select>
       </div>
-      <div style={{borderWidth: '3px', borderColor: 'black', backgroundColor: 'white', borderRadius: '32px', margin: '5px', padding: '10px'}}>
-        <select value={lang2} onChange={(e) => setLang2(e.target.value)}>
+      <div>
+        <select style={{ backgroundColor: '#E4E4E4', borderRadius: '32px', margin: '5px', padding: '10px'}} value={lang2} onChange={(e) => setLang2(e.target.value)}>
           {languages.map((lang) => (
             <option key={lang} value={lang}>{lang}</option>
           ))}
