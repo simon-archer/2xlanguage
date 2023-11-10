@@ -34,6 +34,7 @@ export default function ImageUpload() {
       videoRef.current.srcObject = stream;
     });
   }, [facingMode]);
+  
 
   const captureImage = async () => {
     const canvas = document.createElement('canvas');
