@@ -7,12 +7,16 @@ export const handler: Handlers = {
         let imageUrl;
         let base64Image;
         let description;
+        let lang1;
+        let lang2;
       
         try {
-          const { imageUrl: imageData, lang1, lang2 } = await req.json();
+          const { imageUrl: imageData, lang1: lang1Data, lang2: lang2Data } = await req.json();
           base64Image = imageData.split(',')[1];
           imageType = imageData.split(';')[0].split('/')[1];
           imageUrl = imageData;
+          lang1 = lang1Data;
+          lang2 = lang2Data;
         } catch (error) {
             console.error("Error during request handling:", error);
             return new Response("Error during request handling: " + error.message, { status: 500 });
@@ -35,7 +39,7 @@ export const handler: Handlers = {
                             content: [
                                 {
                                     type: "text",
-                                    text: "Write the shortest description of what is in this image"
+                                    text: `You are an in-conxtext language learnin bot. Write a very short description of what is in the image, in these two languages: ${lang1}(lang1) and ${lang2}(lang2). Format like this lang1: description. lang2: description.`
                                 },
                                 {
                                     type: "image_url",

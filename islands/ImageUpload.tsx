@@ -4,6 +4,10 @@ export default function ImageUpload() {
   const videoRef = useRef(null);
   const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
   const [facingMode, setFacingMode] = useState('environment');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [lang1, setLang1] = useState('en');
+  const [lang2, setLang2] = useState('no');
 
   const switchCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
@@ -44,16 +48,22 @@ export default function ImageUpload() {
     apiCanvas.getContext('2d').drawImage(videoRef.current, 0, 0, apiCanvas.width, apiCanvas.height);
     const apiImageUrl = apiCanvas.toDataURL();
 
-    const lang1 = "en";
-    const lang2 = "es";
+    setLang1("English");
+    setLang2("Norwegian");
+    setIsLoading(true);
 
     const response = await fetch(`/api/describeImage`, {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageUrl: apiImageUrl, lang1, lang2 }),
     });
+    setIsLoading(false);
     const data = await response.json();
-    setImageDescription({...data, imageUrl: displayImageUrl});
+    const descriptions = data.lang1.split("\n");
+    const lang1Description = descriptions[0].replace("lang1: ", "");
+    const lang2Description = descriptions[1].replace("lang2: ", "");
+
+    setImageDescription(prevState => ({ ...prevState, imageUrl: displayImageUrl, lang1: lang1Description, lang2: lang2Description }));
   };
 
   const resetImage = () => {
@@ -65,7 +75,11 @@ export default function ImageUpload() {
   };
 
   return (
+    
     <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+      {/* {!isLoading && (
+          <div className="spinner" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>Loading</div>
+        )} */}
       {!imageDescription.imageUrl ? (
         <video
           ref={videoRef}
@@ -96,10 +110,13 @@ export default function ImageUpload() {
           display: 'flex',
           justifyContent: 'space-between',
           padding: '10px',
-          boxSizing: 'border-box'
+          boxSizing: 'border-box',
+          alignItems: 'flex-start'
         }}>
-          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
-            <button onClick={switchCamera}>Switch Camera</button>
+          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px', visibility: imageDescription.imageUrl ? 'hidden' : 'visible'  }}>
+            <button onClick={switchCamera}>
+              Switch Camera
+            </button>
           </div>
           <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
             <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
@@ -116,8 +133,8 @@ export default function ImageUpload() {
             maxWidth: 'calc(100% - 20px)',
             boxSizing: 'border-box'
           }}>
-            <p style={{ fontWeight: 'bold' }}>{imageDescription.lang1}</p>
-            {/* <p style={{ fontWeight: 'bold' }}>{imageDescription.lang2}</p> */}
+            <p style={{ fontWeight: '' }}>{lang1}: {imageDescription.lang1}</p>
+            <p style={{ fontWeight: 'bold' }}>{lang2}: {imageDescription.lang2}</p>
           </div>
         )}
       </div>
