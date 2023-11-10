@@ -17,7 +17,7 @@ export default function LanguageSelector() {
       justifyContent: 'space-between', 
       backgroundColor: '#fff', 
       borderRadius: '48px', 
-      padding: '5px', 
+      padding: '4px', 
       zIndex: 9999
     }}>
       <div>
