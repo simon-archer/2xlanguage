@@ -5,10 +5,11 @@ import { LanguageContext } from './LanguageContext.tsx';
 export default function ImageUpload() {
   const videoRef = useRef(null);
   const [imageDescription, setImageDescription] = useState({ lang1: '', lang2: '', imageUrl: '' });
-  const [facingMode, setFacingMode] = useState('environment');
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const [facingMode, setFacingMode] = useState(isMobile ? 'environment' : 'user');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { lang1, lang2 } = useContext(LanguageContext);
+  const { lang1, lang2, setIsLanguageSelectorVisible } = useContext(LanguageContext);
 
   const switchCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
@@ -57,13 +58,13 @@ export default function ImageUpload() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ imageUrl: apiImageUrl, lang1, lang2 }),
     });
-    console.log(isLoading)
     const data = await response.json();
     const descriptions = data.lang1.split("\n");
     const lang1Description = descriptions[0].replace("lang1: ", "");
     const lang2Description = descriptions[1].replace("lang2: ", "");
-
+    
     setImageDescription(prevState => ({ ...prevState, imageUrl: displayImageUrl, lang1: lang1Description, lang2: lang2Description }));
+    setIsLanguageSelectorVisible(false);
     setIsLoading(false);
   };
 
@@ -126,14 +127,47 @@ export default function ImageUpload() {
           boxSizing: 'border-box',
           alignItems: 'flex-start'
         }}>
-          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px', visibility: imageDescription.imageUrl ? 'hidden' : 'visible'  }}>
-            <button onClick={switchCamera}>
-              Switch Camera
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            backgroundColor: 'white', 
+            padding: '10px', 
+            borderRadius: '32px', 
+            visibility: (imageDescription.imageUrl || !isMobile) ? 'hidden' : 'visible'
+          }}>
+            <button style={{ 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer',
+              width: '30px',
+              height: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }} onClick={switchCamera}>
+              <i class="material-icons">cameraswitch</i>
             </button>
           </div>
-          <div style={{ backgroundColor: 'white', padding: '10px', borderRadius: '32px' }}>
-            <button onClick={imageDescription.imageUrl ? resetImage : captureImage}>
-              {imageDescription.imageUrl ? 'Take New' : 'Capture Image'}
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            backgroundColor: 'white', 
+            padding: '10px', 
+            borderRadius: '32px' 
+          }}>
+            <button style={{ 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer',
+              width: '30px',
+              height: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }} onClick={imageDescription.imageUrl ? resetImage : captureImage}>
+              <i class="material-icons">{imageDescription.imageUrl ? 'refresh' : 'camera_alt'}</i>
             </button>
           </div>
         </div>
