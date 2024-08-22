@@ -8,12 +8,13 @@ export default function App({ Component }: AppProps) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="/styles.css" />
+        <link rel="icon" href="/icon.svg" />
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         >
         </link>
-        <title>2Caption</title>
+        <title>2Caption - Contextual Language</title>
       </Head>
       <Component />
     </>
